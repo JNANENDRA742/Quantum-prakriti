@@ -1,0 +1,3 @@
+import './Roadmap.css';
+const items=[['NOW','Discover','Know your cryptographic estate.'],['NEXT','Assess','Prioritize quantum-vulnerable systems.'],['THEN','Migrate','Adopt quantum-safe cryptography.'],['ALWAYS','Adapt','Build crypto-agility into your architecture.']];
+export default function Roadmap(){return <section id="roadmap" className="roadmap-section"><div className="section-tag"><span/>INDIA'S QUANTUM ROADMAP / 05</div><h2>Prepare before<br/>the transition becomes urgent.</h2><div className="roadmap-line">{items.map(([when,title,text],i)=><div className={`roadmap-item ${i===0?'active':''}`} key={when}><span>{when}</span><strong>{title}</strong><p>{text}</p></div>)}</div></section>}
