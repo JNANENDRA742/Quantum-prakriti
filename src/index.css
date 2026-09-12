@@ -1,1 +1,63 @@
-html,body,#root{width:100%;min-height:100%;margin:0;padding:0}body{min-width:320px;background:#06100c}*{box-sizing:border-box}button,input,textarea,select{font:inherit}::selection{background:#aaff61;color:#06100c}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-serif: 'DM Serif Display', serif;
+  --font-mono: ui-monospace, monospace;
+
+  --color-brand-bg: #06100c;
+  --color-brand-dark: #07140c;
+  --color-brand-darker: #030b06;
+  --color-brand-light: #f4f7f1;
+  --color-brand-lime: #aaff61;
+  --color-brand-mint: #68f6c2;
+  --color-brand-emerald: #13a864;
+
+  --animate-breathe: breathe 7s ease-in-out infinite alternate;
+  --animate-water: water 18s linear infinite;
+  --animate-pulse-slow: pulse 1.8s infinite;
+  --animate-radar: rotateRadar 4s linear infinite;
+  --animate-radar-pulse: radarPulse 2.5s infinite;
+  --animate-dash: dash 6s linear infinite;
+  --animate-scanline: scanline 5s ease-in-out infinite;
+  --animate-spin-fast: rotateRadar 1s linear infinite;
+}
+/* 
+@keyframes breathe { from { transform: scale(.95);} to { transform: scale(1.05);} }
+@keyframes water { from { transform: translate(0,0) scale(1.4);} to { transform: translate(-4%,3%) scale(1.4);} }
+@keyframes pulse { 0%,100% {opacity:.5;transform:scale(.8);} 50% {opacity:1;transform:scale(1.2);} }
+@keyframes radarPulse { 0% {transform:scale(.5);opacity:1;} 100% {transform:scale(2.5);opacity:0;} }
+@keyframes rotateRadar { from {transform:rotate(0);} to {transform:rotate(360deg);} }
+@keyframes dash { to { stroke-dashoffset: -10; } }
+@keyframes scanline { 0%,100%{top:-5%;opacity:0;} 15%,70%{opacity:.8;} 85%{top:105%;opacity:0;} }
+ */
+@keyframes breathe     { from { transform: scale(.95); } to { transform: scale(1.05); } }
+@keyframes pulse       { 0%,100% { opacity:.5; transform:scale(.8);} 50% { opacity:1; transform:scale(1.2);} }
+@keyframes radarPulse  { 0% { transform:scale(.5); opacity:1;} 100% { transform:scale(2.5); opacity:0;} }
+@keyframes rotateRadar { from { transform:rotate(0);} to { transform:rotate(360deg);} }
+@keyframes scanline    { 0%,100%{top:-5%;opacity:0;} 15%,70%{opacity:.8;} 85%{top:105%;opacity:0;} }
+
+html { scroll-behavior: smooth; }
+html, body, #root { width: 100%; min-height: 100%; margin: 0; padding: 0; }
+body { min-width: 320px; background: #06100c; color: #f2f5ee; font-family: var(--font-sans); }
+* { box-sizing: border-box; }
+button, a, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+
+::selection { background: #aaff61; color: #06100c; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0)     scale(1);   opacity: 0; }
+  15%  { opacity: 0.9; }
+  85%  { opacity: 0.6; }
+  100% { transform: translateY(-40px) scale(0.6); opacity: 0; }
+}
