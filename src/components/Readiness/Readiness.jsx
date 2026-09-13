@@ -1,55 +1,162 @@
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 
 export default function Readiness({ onScan }) {
+  const [visible, setVisible] = useState(false);
+  const [score, setScore] = useState(0);
+  const ref = useRef(null);
+
+  /* Count-up when in view */
+  useEffect(() => {
+    if (!ref.current) return;
+    const io = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); io.disconnect(); } },
+      { threshold: 0.35 }
+    );
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    let raf;
+    const start = performance.now();
+    const dur = 1400;
+    const target = 68;
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setScore(Math.round(eased * target));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [visible]);
+
+  /* Dial arc: 0 → 68% of 270deg */
+  const arcLen = 270;
+  const dash = `${(score / 100) * arcLen} ${arcLen}`;
+
   return (
-    <section id="readiness" className="px-[7vw] py-[120px] bg-[#f4f7f1]">
-      <div className="min-h-[560px] rounded-[30px] overflow-hidden grid grid-cols-2 bg-[radial-gradient(circle_at_80%_50%,rgba(85,255,130,0.22),transparent_35%),#dcebdc] max-[950px]:grid-cols-1">
-        <div className="p-[70px] max-[600px]:p-[35px_25px]">
-          <div className="w-fit flex items-center gap-[9px] px-[14px] py-[9px] rounded-[20px] text-[10px] font-semibold tracking-[0.12em] text-[#8fac98] border border-[rgba(149,255,103,0.17)] bg-[rgba(18,71,35,0.25)]">
-            <span className="w-[7px] h-[7px] rounded-full bg-[#9cff43] shadow-[0_0_12px_#91ff50]" />
-            QUANTUM READINESS / 04
-          </div>
+    <section id="readiness" ref={ref} className="px-[7vw] py-[140px] bg-[#f4f7f1]">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="relative rounded-[34px] overflow-hidden bg-[#0a1a12] grid grid-cols-[1.1fr_0.9fr] max-[950px]:grid-cols-1 shadow-[0_50px_120px_rgba(7,20,12,0.30)]">
+          {/* subtle grid bg */}
+          <div
+            className="absolute inset-0 opacity-[0.10]"
+            style={{
+              backgroundImage:
+                'linear-gradient(rgba(109,255,130,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(109,255,130,0.5) 1px, transparent 1px)',
+              backgroundSize: '60px 60px',
+            }}
+          />
 
-          <h2 className="mt-[25px] mb-[18px] font-serif font-normal text-[clamp(50px,5vw,75px)] leading-[0.96] tracking-[-0.04em]">
-            How ready is
-            <br />
-            your cryptography?
-          </h2>
-
-          <p className="max-w-[540px] text-[#5d6d61] leading-[1.7]">
-            Run a guided readiness check to understand your current cryptographic posture
-            and identify where migration should begin.
-          </p>
-
-          <button
-            className="mt-[25px] flex items-center gap-[10px] border-none bg-[#07140c] text-[#d0ff82] px-[23px] py-[17px] rounded-[30px] font-semibold"
-            onClick={onScan}
-          >
-            Run readiness check <ArrowRight size={17} />
-          </button>
-        </div>
-
-        <div className="relative grid place-items-center bg-[radial-gradient(circle,rgba(59,255,121,0.15),transparent_50%)] max-[950px]:min-h-[500px]">
-          <div className="relative w-[390px] h-[390px] rounded-full max-[600px]:w-[300px] max-[600px]:h-[300px]">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-[rgba(26,141,76,0.2)] rounded-full" />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] border border-[rgba(26,141,76,0.2)] rounded-full" />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] border border-[rgba(26,141,76,0.2)] rounded-full" />
-            <div className="absolute left-1/2 top-1/2 w-1/2 h-[1px] origin-left bg-[#29c776] animate-[rotateRadar_4s_linear_infinite]" />
-            <div className="absolute left-1/2 top-1/2 w-[70px] h-[70px] -translate-x-1/2 -translate-y-1/2 rounded-full grid place-items-center text-[#d5ff9b] bg-[#092315] shadow-[0_0_40px_rgba(27,255,112,0.22)]">
-              <ShieldCheck size={26} />
+          {/* Left */}
+          <div className="relative p-[70px] max-[600px]:p-[36px_26px] z-[2]">
+            <div className="w-fit flex items-center gap-[9px] px-[14px] py-[9px] rounded-[20px] text-[10px] font-semibold tracking-[0.14em] text-[#a8cbaa] border border-[rgba(149,255,103,0.20)] bg-[rgba(18,71,35,0.35)]">
+              <span className="w-[7px] h-[7px] rounded-full bg-[#9cff43] shadow-[0_0_12px_#91ff50]" />
+              QUANTUM READINESS / 04
             </div>
 
-            <span className="absolute top-[15%] left-[5%] px-[11px] py-[7px] border border-[rgba(32,136,77,0.2)] rounded-lg bg-white/45 font-mono text-[8px] text-[#387250]">
-              CRYPTO
+            <h2 className="mt-[26px] font-serif font-normal text-[clamp(46px,5vw,78px)] leading-[0.96] tracking-[-0.04em] text-[#eaf6ea]">
+              How ready is
+              <br />
+              <span className="text-[#7bffc0] italic">your cryptography?</span>
+            </h2>
+
+            <p className="mt-6 max-w-[480px] text-[#9bafa0] leading-[1.7] text-[16px]">
+              Run a guided readiness check to understand your current cryptographic posture
+              and identify where migration should begin.
+            </p>
+
+            {/* Mini stats */}
+            <div className="mt-10 grid grid-cols-3 gap-6 max-w-[520px] max-[600px]:grid-cols-1">
+              {[
+                ['12.8K', 'Assets'],
+                ['318', 'Services'],
+                ['4', 'Exposed'],
+              ].map(([n, l]) => (
+                <div key={l}>
+                  <div className="font-serif text-[34px] text-[#eaf6ea] leading-none">{n}</div>
+                  <div className="mt-2 text-[10px] font-mono tracking-[0.20em] text-[#5f7568]">
+                    {l.toUpperCase()}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              className="mt-10 inline-flex items-center gap-3 px-6 py-[18px] rounded-[30px] bg-[linear-gradient(100deg,#b4ff50,#5ff2a9)] text-[#071008] font-semibold shadow-[0_15px_45px_rgba(80,255,126,0.25)] hover:-translate-y-[2px] hover:shadow-[0_20px_55px_rgba(80,255,126,0.35)] transition-all"
+              onClick={onScan}
+            >
+              Run readiness check <ArrowRight size={17} />
+            </button>
+          </div>
+
+          {/* Right: score dial */}
+          <div className="relative bg-[radial-gradient(circle_at_50%_50%,rgba(59,255,121,0.15),transparent_55%)] grid place-items-center p-[60px] max-[600px]:p-[30px] min-h-[520px]">
+            <div className="relative w-[340px] h-[340px] max-[600px]:w-[260px] max-[600px]:h-[260px]">
+              {/* SVG dial */}
+              <svg viewBox="0 0 220 220" className="w-full h-full -rotate-[135deg]">
+                <defs>
+                  <linearGradient id="dialGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#68f6c2" />
+                    <stop offset="100%" stopColor="#aaff61" />
+                  </linearGradient>
+                </defs>
+                {/* track */}
+                <circle
+                  cx="110" cy="110" r="90"
+                  fill="none"
+                  stroke="rgba(160,255,118,0.10)"
+                  strokeWidth="10"
+                  strokeDasharray={`${arcLen} ${360 - arcLen}`}
+                  strokeLinecap="round"
+                />
+                {/* progress */}
+                <circle
+                  cx="110" cy="110" r="90"
+                  fill="none"
+                  stroke="url(#dialGrad)"
+                  strokeWidth="10"
+                  strokeDasharray={dash}
+                  strokeLinecap="round"
+                  style={{ transition: 'stroke-dasharray 0.4s ease-out' }}
+                />
+              </svg>
+
+              {/* Center content */}
+              <div className="absolute inset-0 grid place-items-center">
+                <div className="text-center">
+                  <div className="font-serif text-[68px] leading-none text-[#eaf6ea] tabular-nums max-[600px]:text-[54px]">
+                    {score}
+                    <span className="text-[26px] text-[#7bffc0] align-top ml-1">%</span>
+                  </div>
+                  <div className="mt-3 font-mono text-[9px] tracking-[0.26em] text-[#7e9a86]">
+                    CRYPTO READINESS
+                  </div>
+                  <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[rgba(160,255,118,0.25)] text-[10px] text-[#a8cbaa]">
+                    <ShieldCheck size={12} className="text-[#68f6c2]" />
+                    PARTIALLY READY
+                  </div>
+                </div>
+              </div>
+
+              {/* Corner labels */}
+              <span className="absolute -top-2 left-1/2 -translate-x-1/2 font-mono text-[8px] tracking-[0.20em] text-[#5f7568]">
+                POST-QUANTUM
+              </span>
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 font-mono text-[8px] tracking-[0.20em] text-[#5f7568]">
+                CLASSICAL
+              </span>
+            </div>
+
+            {/* Floating chips */}
+            <span className="absolute top-[16%] right-[14%] px-3 py-2 rounded-full border border-[rgba(160,255,118,0.25)] bg-[rgba(8,30,18,0.75)] backdrop-blur font-mono text-[9px] tracking-[0.16em] text-[#b8d6be]">
+              RSA · 4
             </span>
-            <span className="absolute top-[17%] right-[2%] px-[11px] py-[7px] border border-[rgba(32,136,77,0.2)] rounded-lg bg-white/45 font-mono text-[8px] text-[#387250]">
-              TLS
-            </span>
-            <span className="absolute bottom-[15%] right-[7%] px-[11px] py-[7px] border border-[rgba(32,136,77,0.2)] rounded-lg bg-white/45 font-mono text-[8px] text-[#387250]">
-              PQC
-            </span>
-            <span className="absolute bottom-[12%] left-[12%] px-[11px] py-[7px] border border-[rgba(32,136,77,0.2)] rounded-lg bg-white/45 font-mono text-[8px] text-[#387250]">
-              KEYS
+            <span className="absolute bottom-[18%] left-[14%] px-3 py-2 rounded-full border border-[rgba(160,255,118,0.25)] bg-[rgba(8,30,18,0.75)] backdrop-blur font-mono text-[9px] tracking-[0.16em] text-[#b8d6be]">
+              ECC · 12
             </span>
           </div>
         </div>
