@@ -6,7 +6,6 @@ export default function Readiness({ onScan }) {
   const [score, setScore] = useState(0);
   const ref = useRef(null);
 
-  /* Count-up when in view */
   useEffect(() => {
     if (!ref.current) return;
     const io = new IntersectionObserver(
@@ -33,15 +32,21 @@ export default function Readiness({ onScan }) {
     return () => cancelAnimationFrame(raf);
   }, [visible]);
 
-  /* Dial arc: 0 → 68% of 270deg */
   const arcLen = 270;
   const dash = `${(score / 100) * arcLen} ${arcLen}`;
 
   return (
     <section id="readiness" ref={ref} className="px-[7vw] py-[140px] bg-[#f4f7f1]">
       <div className="max-w-[1400px] mx-auto">
-        <div className="relative rounded-[34px] overflow-hidden bg-[#0a1a12] grid grid-cols-[1.1fr_0.9fr] max-[950px]:grid-cols-1 shadow-[0_50px_120px_rgba(7,20,12,0.30)]">
-          {/* subtle grid bg */}
+        <div
+          className="relative rounded-[34px] overflow-hidden bg-[#0a1a12] grid grid-cols-[1.1fr_0.9fr] max-[950px]:grid-cols-1 shadow-[0_50px_120px_rgba(7,20,12,0.30)]"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.96)',
+            filter: visible ? 'blur(0)' : 'blur(10px)',
+            transition: 'opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1), filter 1.2s',
+          }}
+        >
           <div
             className="absolute inset-0 opacity-[0.10]"
             style={{
@@ -51,32 +56,90 @@ export default function Readiness({ onScan }) {
             }}
           />
 
-          {/* Left */}
           <div className="relative p-[70px] max-[600px]:p-[36px_26px] z-[2]">
-            <div className="w-fit flex items-center gap-[9px] px-[14px] py-[9px] rounded-[20px] text-[10px] font-semibold tracking-[0.14em] text-[#a8cbaa] border border-[rgba(149,255,103,0.20)] bg-[rgba(18,71,35,0.35)]">
-              <span className="w-[7px] h-[7px] rounded-full bg-[#9cff43] shadow-[0_0_12px_#91ff50]" />
+            <div
+              className="w-fit flex items-center gap-[9px] px-[14px] py-[9px] rounded-[20px] text-[10px] font-semibold tracking-[0.14em] text-[#a8cbaa] border border-[rgba(149,255,103,0.20)] bg-[rgba(18,71,35,0.35)]"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateX(0)' : 'translateX(-30px)',
+                filter: visible ? 'blur(0)' : 'blur(4px)',
+                transition: 'opacity 0.9s 0.2s cubic-bezier(0.16,1,0.3,1), transform 0.9s 0.2s cubic-bezier(0.16,1,0.3,1), filter 0.9s 0.2s',
+              }}
+            >
+              <span className="w-[7px] h-[7px] rounded-full bg-[#9cff43] shadow-[0_0_12px_#91ff50]"
+                style={{ animation: 'pulse 2s infinite' }} />
               QUANTUM READINESS / 04
             </div>
 
             <h2 className="mt-[26px] font-serif font-normal text-[clamp(46px,5vw,78px)] leading-[0.96] tracking-[-0.04em] text-[#eaf6ea]">
-              How ready is
-              <br />
-              <span className="text-[#7bffc0] italic">your cryptography?</span>
+              <span className="block overflow-hidden">
+                <span className="inline-block">
+                  {'How ready is'.split('').map((ch, i) => (
+                    <span
+                      key={i}
+                      className="inline-block"
+                      style={{
+                        opacity: visible ? 1 : 0,
+                        transform: visible ? 'translateY(0)' : 'translateY(60%)',
+                        filter: visible ? 'blur(0)' : 'blur(6px)',
+                        transition: `opacity 0.9s ${0.3 + i * 0.03}s cubic-bezier(0.16,1,0.3,1), transform 0.9s ${0.3 + i * 0.03}s cubic-bezier(0.16,1,0.3,1), filter 0.9s ${0.3 + i * 0.03}s`,
+                        whiteSpace: 'pre',
+                      }}
+                    >
+                      {ch}
+                    </span>
+                  ))}
+                </span>
+              </span>
+              <span className="block overflow-hidden italic text-[#7bffc0]">
+                <span className="inline-block">
+                  {'your cryptography?'.split('').map((ch, i) => (
+                    <span
+                      key={i}
+                      className="inline-block"
+                      style={{
+                        opacity: visible ? 1 : 0,
+                        transform: visible ? 'translateY(0)' : 'translateY(60%)',
+                        filter: visible ? 'blur(0)' : 'blur(6px)',
+                        transition: `opacity 0.9s ${0.65 + i * 0.025}s cubic-bezier(0.16,1,0.3,1), transform 0.9s ${0.65 + i * 0.025}s cubic-bezier(0.16,1,0.3,1), filter 0.9s ${0.65 + i * 0.025}s`,
+                        whiteSpace: 'pre',
+                      }}
+                    >
+                      {ch}
+                    </span>
+                  ))}
+                </span>
+              </span>
             </h2>
 
-            <p className="mt-6 max-w-[480px] text-[#9bafa0] leading-[1.7] text-[16px]">
+            <p
+              className="mt-6 max-w-[480px] text-[#9bafa0] leading-[1.7] text-[16px]"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(25px)',
+                filter: visible ? 'blur(0)' : 'blur(6px)',
+                transition: 'opacity 1s 1.1s cubic-bezier(0.16,1,0.3,1), transform 1s 1.1s cubic-bezier(0.16,1,0.3,1), filter 1s 1.1s',
+              }}
+            >
               Run a guided readiness check to understand your current cryptographic posture
               and identify where migration should begin.
             </p>
 
-            {/* Mini stats */}
             <div className="mt-10 grid grid-cols-3 gap-6 max-w-[520px] max-[600px]:grid-cols-1">
               {[
                 ['12.8K', 'Assets'],
                 ['318', 'Services'],
                 ['4', 'Exposed'],
-              ].map(([n, l]) => (
-                <div key={l}>
+              ].map(([n, l], i) => (
+                <div
+                  key={l}
+                  style={{
+                    opacity: visible ? 1 : 0,
+                    transform: visible ? 'translateY(0)' : 'translateY(25px)',
+                    filter: visible ? 'blur(0)' : 'blur(6px)',
+                    transition: `opacity 0.9s ${1.3 + i * 0.15}s cubic-bezier(0.16,1,0.3,1), transform 0.9s ${1.3 + i * 0.15}s cubic-bezier(0.16,1,0.3,1), filter 0.9s ${1.3 + i * 0.15}s`,
+                  }}
+                >
                   <div className="font-serif text-[34px] text-[#eaf6ea] leading-none">{n}</div>
                   <div className="mt-2 text-[10px] font-mono tracking-[0.20em] text-[#5f7568]">
                     {l.toUpperCase()}
@@ -86,17 +149,21 @@ export default function Readiness({ onScan }) {
             </div>
 
             <button
-              className="mt-10 inline-flex items-center gap-3 px-6 py-[18px] rounded-[30px] bg-[linear-gradient(100deg,#b4ff50,#5ff2a9)] text-[#071008] font-semibold shadow-[0_15px_45px_rgba(80,255,126,0.25)] hover:-translate-y-[2px] hover:shadow-[0_20px_55px_rgba(80,255,126,0.35)] transition-all"
+              className="mt-10 inline-flex items-center gap-3 px-6 py-[18px] rounded-[30px] bg-[linear-gradient(100deg,#b4ff50,#5ff2a9)] text-[#071008] font-semibold shadow-[0_15px_45px_rgba(80,255,126,0.25)] hover:-translate-y-[2px] hover:shadow-[0_20px_55px_rgba(80,255,126,0.35)] transition-all group/rd"
               onClick={onScan}
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(25px)',
+                transition: 'opacity 1s 1.8s cubic-bezier(0.16,1,0.3,1), transform 1s 1.8s cubic-bezier(0.16,1,0.3,1)',
+              }}
             >
-              Run readiness check <ArrowRight size={17} />
+              Run readiness check
+              <ArrowRight size={17} className="group-hover/rd:translate-x-1 transition-transform" />
             </button>
           </div>
 
-          {/* Right: score dial */}
           <div className="relative bg-[radial-gradient(circle_at_50%_50%,rgba(59,255,121,0.15),transparent_55%)] grid place-items-center p-[60px] max-[600px]:p-[30px] min-h-[520px]">
             <div className="relative w-[340px] h-[340px] max-[600px]:w-[260px] max-[600px]:h-[260px]">
-              {/* SVG dial */}
               <svg viewBox="0 0 220 220" className="w-full h-full -rotate-[135deg]">
                 <defs>
                   <linearGradient id="dialGrad" x1="0" y1="0" x2="1" y2="1">
@@ -104,7 +171,6 @@ export default function Readiness({ onScan }) {
                     <stop offset="100%" stopColor="#aaff61" />
                   </linearGradient>
                 </defs>
-                {/* track */}
                 <circle
                   cx="110" cy="110" r="90"
                   fill="none"
@@ -113,7 +179,6 @@ export default function Readiness({ onScan }) {
                   strokeDasharray={`${arcLen} ${360 - arcLen}`}
                   strokeLinecap="round"
                 />
-                {/* progress */}
                 <circle
                   cx="110" cy="110" r="90"
                   fill="none"
@@ -125,7 +190,6 @@ export default function Readiness({ onScan }) {
                 />
               </svg>
 
-              {/* Center content */}
               <div className="absolute inset-0 grid place-items-center">
                 <div className="text-center">
                   <div className="font-serif text-[68px] leading-none text-[#eaf6ea] tabular-nums max-[600px]:text-[54px]">
@@ -142,7 +206,6 @@ export default function Readiness({ onScan }) {
                 </div>
               </div>
 
-              {/* Corner labels */}
               <span className="absolute -top-2 left-1/2 -translate-x-1/2 font-mono text-[8px] tracking-[0.20em] text-[#5f7568]">
                 POST-QUANTUM
               </span>
@@ -151,11 +214,24 @@ export default function Readiness({ onScan }) {
               </span>
             </div>
 
-            {/* Floating chips */}
-            <span className="absolute top-[16%] right-[14%] px-3 py-2 rounded-full border border-[rgba(160,255,118,0.25)] bg-[rgba(8,30,18,0.75)] backdrop-blur font-mono text-[9px] tracking-[0.16em] text-[#b8d6be]">
+            <span
+              className="absolute top-[16%] right-[14%] px-3 py-2 rounded-full border border-[rgba(160,255,118,0.25)] bg-[rgba(8,30,18,0.75)] backdrop-blur font-mono text-[9px] tracking-[0.16em] text-[#b8d6be]"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'opacity 1s 0.7s cubic-bezier(0.16,1,0.3,1), transform 1s 0.7s cubic-bezier(0.16,1,0.3,1)',
+              }}
+            >
               RSA · 4
             </span>
-            <span className="absolute bottom-[18%] left-[14%] px-3 py-2 rounded-full border border-[rgba(160,255,118,0.25)] bg-[rgba(8,30,18,0.75)] backdrop-blur font-mono text-[9px] tracking-[0.16em] text-[#b8d6be]">
+            <span
+              className="absolute bottom-[18%] left-[14%] px-3 py-2 rounded-full border border-[rgba(160,255,118,0.25)] bg-[rgba(8,30,18,0.75)] backdrop-blur font-mono text-[9px] tracking-[0.16em] text-[#b8d6be]"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'opacity 1s 0.9s cubic-bezier(0.16,1,0.3,1), transform 1s 0.9s cubic-bezier(0.16,1,0.3,1)',
+              }}
+            >
               ECC · 12
             </span>
           </div>

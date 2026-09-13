@@ -17,8 +17,10 @@ export const featureCards = [
 
 export const workflowSteps = [
   ['01', 'Discover', 'Find cryptographic assets across your technology estate.'],
-  ['02', 'Prioritise', 'Score risk based on algorithm, data lifetime and business criticality.'],
-  ['03', 'Plan', 'Create an evidence-backed migration roadmap.'],
-  ['04', 'Migrate', 'Move toward post-quantum and hybrid cryptographic architectures.'],
-  ['05', 'Monitor', 'Maintain visibility as systems, algorithms and standards evolve.'],
+  ['02', 'Inventory', 'Organise findings into an evidence-aware view of your cryptographic environment.'],
+  ['03', 'ASSESS', 'Add context: where an asset lives, what it protects and what depends on it.'],
+  ['04', 'Prioritise', 'Bring business criticality, sensitivity and exposure together for review.'],
+  ['05', 'Prepare', 'Explore migration considerations without assuming a universal replacement path.'],
+  ['06', 'Migrate', 'Turn prioritised evidence into an informed quantum-safe transition plan.'],
+  ['07', 'Validate', 'Re-check the environment as decisions land and the inventory evolves.'],
 ];

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Search, X, ArrowRight } from 'lucide-react';
+import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import Platform from './components/Platform/Platform';
@@ -16,6 +17,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [scanStarted, setScanStarted] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [activeAudience, setActiveAudience] = useState('ciso');
   const heroRef = useRef(null);
 
   /* Prevent scroll while loading */
@@ -72,6 +74,7 @@ export default function App() {
           setMenuOpen={setMenuOpen}
           onScan={startScan}
           onSearch={() => setSearchOpen(true)}
+          onAudienceSelect={setActiveAudience}
         />
         <main>
           <div onMouseMove={handleMouseMove}>
@@ -79,7 +82,7 @@ export default function App() {
           </div>
           <Platform />
           <Workflow />
-          <Audience />
+          <Audience activeId={activeAudience} onSelect={setActiveAudience} />
           <Readiness onScan={startScan} />
           <Roadmap />
         </main>
